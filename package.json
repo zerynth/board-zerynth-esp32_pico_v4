@@ -1,0 +1,27 @@
+{
+    "dependencies": {
+        "lib.espressif.esp32net": "r2.1.2",
+        "sys.zerynth.esptool": "r2.1.2",
+        "sys.zerynth.xtensalx6": "r2.1.2",
+        "vhal.zerynth.xtensalx6_esp32": "r2.1.2"
+    },
+    "description": "Add support for Esp32 Pico v4",
+    "fullname": "board.zerynth.esp32_pico_v4",
+    "git_pointer": "zerynth://zerynth-boards/esp32_pico_v4",
+    "info": {
+        "board": "Esp32 Pico v4",
+        "chip_manufacturer": "Espressif",
+        "device": "esp32",
+        "family_type": "Xtensa lx6"
+    },
+    "keywords": [
+        "espressif",
+        "esp32",
+        "board",
+        "pico"
+    ],
+    "repo": "official",
+    "title": "Esp32 Pico v4 Support Package",
+    "version": "r2.1.2",
+    "whatsnew": ""
+}
