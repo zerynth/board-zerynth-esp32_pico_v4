@@ -1,9 +1,9 @@
 {
     "dependencies": {
-        "lib.espressif.esp32net": "r2.1.2",
-        "sys.zerynth.esptool": "r2.1.2",
-        "sys.zerynth.xtensalx6": "r2.1.2",
-        "vhal.zerynth.xtensalx6_esp32": "r2.1.2"
+        "lib.espressif.esp32net": "r2.2.0",
+        "sys.zerynth.esptool": "r2.2.0",
+        "sys.zerynth.xtensalx6": "r2.2.0",
+        "vhal.zerynth.xtensalx6_esp32": "r2.2.0"
     },
     "description": "Add support for Esp32 Pico v4",
     "fullname": "board.zerynth.esp32_pico_v4",
@@ -22,6 +22,6 @@
     ],
     "repo": "official",
     "title": "Esp32 Pico v4 Support Package",
-    "version": "r2.1.2",
+    "version": "r2.2.0",
     "whatsnew": ""
 }
