@@ -47,7 +47,7 @@ class Esp32PicoV4(Board):
         iromf = fs.get_tempfile(irom)
         bromf = fs.get_tempfile(brom)
         vromf = fs.get_tempfile(vrom)
-        res,out,err = proc.runcmd("python",tools["esptool32"],"--chip", "esp32","--port",self.port,"--baud","115200","--before", "default_reset", "--after", "hard_reset","write_flash","-z","--flash_freq","40m","--flash_mode","dio","--flash_size","detect","0x1000",romf, "0x10000",iromf, "0x8000", bromf,"0x390000",vromf,outfn=outfn)
+        res,out,err = proc.runcmd("python",tools["esptool32"],"--chip", "esp32","--port",self.port,"--baud","1500000","--before", "default_reset", "--after", "hard_reset","write_flash","-z","--flash_freq","40m","--flash_mode","dio","--flash_size","detect","0x1000",romf, "0x10000",iromf, "0x8000", bromf,"0x390000",vromf,outfn=outfn)
         fs.del_tempfile(romf)
         fs.del_tempfile(iromf)
         fs.del_tempfile(bromf)
@@ -58,6 +58,39 @@ class Esp32PicoV4(Board):
 
     def erase(self,outfn=None):
         res,out,err = proc.runcmd("python",tools["esptool32"],"--chip", "esp32","--port",self.port,"--baud","115200","erase_flash",outfn=outfn)
+        if res:
+            return False,out
+        return True,out
+
+    def custom_get_chipid(self,method=0,outfn=None):
+        res,out,err = proc.runcmd("python",tools["esptool32"],"--chip", "esp32","--port",self.port,"--baud","115200","--before", "default_reset", "--after", "hard_reset","read_mac",outfn=outfn)
+
+        if res:
+            return None
+        lines=out.split("\n")
+        for line in lines:
+            if line.startswith("MAC: "):
+                smac = line[5:].split(":")
+                mac = ""
+                for m in smac:
+                    mac = mac+m[1]+m[0]
+                return mac
+        return None
+
+    def custom_burn_layout(self,layout,options={},outfn=None):
+        args = []
+        for chunk in layout.chunks():
+            args.append(hex(chunk["loc"]) if not isinstance(chunk["loc"],str) else chunk["loc"])
+            tfile = fs.get_tempfile(chunk["bin"])
+            args.append(tfile)
+        baud = str(options.get("baud",115200))
+        res,out,err = proc.runcmd("python",tools["esptool32"],"--chip", "esp32","--port",self.port,"--baud",baud,"--before", "default_reset", "--after", "hard_reset","write_flash","-z","--flash_freq","40m","--flash_mode","dio","--flash_size","detect",*args,outfn=outfn)
+
+        for arg in args:
+            # cleanup
+            if not arg.startswith("0x"):
+                fs.rm_file(arg)
+
         if res:
             return False,out
         return True,out
