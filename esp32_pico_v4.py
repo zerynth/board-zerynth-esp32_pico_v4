@@ -47,7 +47,7 @@ class Esp32PicoV4(Board):
         iromf = fs.get_tempfile(irom)
         bromf = fs.get_tempfile(brom)
         vromf = fs.get_tempfile(vrom)
-        res,out,err = proc.runcmd("python",tools["esptool32"],"--chip", "esp32","--port",self.port,"--baud","1500000","--before", "default_reset", "--after", "hard_reset","write_flash","-z","--flash_freq","40m","--flash_mode","dio","--flash_size","detect","0x1000",romf, "0x10000",iromf, "0x8000", bromf,"0x390000",vromf,outfn=outfn)
+        res,out,err = proc.runcmd("python",tools["esptool32"],"--chip", "esp32","--port",self.port,"--baud","115200","--before", "default_reset", "--after", "hard_reset","write_flash","-z","--flash_freq","40m","--flash_mode","dio","--flash_size","detect","0x1000",romf, "0x10000",iromf, "0x8000", bromf,"0x390000",vromf,outfn=outfn)
         fs.del_tempfile(romf)
         fs.del_tempfile(iromf)
         fs.del_tempfile(bromf)
