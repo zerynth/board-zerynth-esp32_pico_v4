@@ -1,0 +1,15 @@
+---
+description: Add support for Esp32 Pico v4
+fullname: board.zerynth.esp32_pico_v4
+info:
+    board: Esp32 Pico v4
+    chip_manufacturer: Espressif
+    device: esp32
+    family_type: Xtensa lx6
+keywords:
+- espressif
+- esp32
+- board
+- pico
+title: Esp32 Pico v4 Support Package
+...
