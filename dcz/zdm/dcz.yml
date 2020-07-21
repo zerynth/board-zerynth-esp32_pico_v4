@@ -1,0 +1,90 @@
+# Zerynth Device Configuration
+#
+# this file declares a set of resources to be loaded on the device
+# in a way that is indipendent from the firmware in order to facilitate
+# mass programming and mass provisioning.
+#
+# It is in Yaml format, and the various sections/options are documented below
+
+
+# this field must be true to enable this configuration!
+# if not present or false, the configuration is skipped
+active: true
+
+
+############################
+# Provisioning Section
+#
+# in the "provisioning" section, the various resources
+# with their location and their generation method are listed
+#
+# For each resource the following fields are mandatory:
+#
+# - name: an ascii string specifying the resource name (max 16 bytes)
+# - type: the type of the resource [file, prvkey, pubkey, cert]
+# - args: a list of arguments needed to load or generate the resource
+# - mapping: a list of addresses where the resource must be copied
+# 
+# When using DCZ (see next section), an optional parameter "format" can be given.
+# It must be an ascii string of at most 4 bytes, by default it is set to "bin"
+#
+# uncomment the following section to enable provisioning
+provisioning:
+    # the provisioning method for the ZDM
+    method: zdm
+    # the list of resources
+    resources:
+        # the device CA certificate
+        - name: cacert
+          type: cacert
+          args: zdevice.json
+          mapping: [0x326000]
+        # the device certificate
+        - name: clicert
+          type: clicert
+          args: zdevice.json
+          mapping: [0x320000]
+        # the device private key
+        - name: prvkey
+          type: prvkey
+          mapping: [0x322000]
+          args: zdevice.json
+          encrypt: True
+        # the endpoint where to connect to
+        - name: endpoint
+          type: endpoint
+          args: zdevice.json
+          mapping: [0x324000]
+          format: json
+        # some device info useful to have in the firmware
+        - name: devinfo
+          type: devinfo
+          args: zdevice.json
+          mapping: [0x328000]
+          format: json
+
+
+############################
+# DCZ Section
+#
+# in the "dcz" section the provisioned resources (or a subset of them)
+# can be included in the Device Configuration Zone. The DCZ is a versionable index
+# of the available resources that can be easily accessed and updated 
+# with the dcz Zerynth module.
+#
+# DCZ supports up to 8 replication zones for safety. If a resource is included in a DCZ
+# with replication n, it must be placed in exactly n different locations for versioning
+#
+# uncomment the section below to enable dcz
+dcz:
+    # locations of the DCZs (replication 1)
+    mapping: [0x310000]
+    # list of resource names to be included
+    resources:
+        - endpoint
+        - clicert
+        - prvkey
+        - cacert
+        - devinfo
+
+
